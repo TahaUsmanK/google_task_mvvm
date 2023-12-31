@@ -3,28 +3,20 @@ import 'package:google_task_mvvm/view/my_task_screen.dart';
 import 'package:google_task_mvvm/view/new_list_screen.dart';
 import 'package:google_task_mvvm/view/starred_task_screen.dart';
 import 'package:google_task_mvvm/view/widgets/bottom_navigation_bar.dart';
+import 'package:google_task_mvvm/view_model/auth_view_model.dart';
 import 'package:google_task_mvvm/view_model/home_view_model.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => HomeViewModel(),
-      child: HomeScreenContent(),
-    );
-  }
+  _HomeScreenContent createState() => _HomeScreenContent();
 }
 
-class HomeScreenContent extends StatefulWidget {
-  @override
-  _HomeScreenContentState createState() => _HomeScreenContentState();
-}
-
-class _HomeScreenContentState extends State<HomeScreenContent> {
+class _HomeScreenContent extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<HomeViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
+    final homeViewModel = Provider.of<HomeViewModel>(context);
 
     return DefaultTabController(
       length: 3,
@@ -39,9 +31,20 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 14),
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/profile.png'),
-              ),
+              child: authViewModel.user != null
+                  ? CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(authViewModel.user!.photoURL!),
+                    )
+                  : InkWell(
+                      onTap: () async {
+                        await authViewModel.signInWithGoogle();
+                      },
+                      child: CircleAvatar(
+                        backgroundImage:
+                            AssetImage('assets/images/profile.png'),
+                      ),
+                    ),
             ),
           ],
           bottom: TabBar(
@@ -79,9 +82,9 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBarWidget(
-          currentIndex: viewModel.currentIndex,
+          currentIndex: homeViewModel.currentIndex,
           onTap: (index) {
-            viewModel.setIndex(index);
+            homeViewModel.setIndex(index);
           },
         ),
       ),
