@@ -1,6 +1,11 @@
 class Task {
   final String title;
-  final String description;
 
-  Task({required this.title, required this.description});
+  Task({required this.title});
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      title: map['title'] ?? '',
+    );
+  }
 }

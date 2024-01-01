@@ -9,10 +9,10 @@ import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  _HomeScreenContent createState() => _HomeScreenContent();
+  _HomeScreen createState() => _HomeScreen();
 }
 
-class _HomeScreenContent extends State<HomeScreen> {
+class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -79,6 +79,9 @@ class _HomeScreenContent extends State<HomeScreen> {
           children: [
             StarredTaskScreen(),
             MyTasksScreen(),
+            Scaffold(
+              backgroundColor: Color.fromARGB(255, 26, 25, 25),
+            ),
           ],
         ),
         bottomNavigationBar: BottomNavigationBarWidget(

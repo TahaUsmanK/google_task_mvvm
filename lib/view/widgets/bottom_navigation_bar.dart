@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_task_mvvm/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
@@ -11,6 +13,8 @@ class BottomNavigationBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
     return Container(
       height: 90,
       color: const Color.fromARGB(255, 49, 49, 49),
@@ -51,7 +55,9 @@ class BottomNavigationBarWidget extends StatelessWidget {
                     color: Colors.blue.shade800,
                   ),
                   child: FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      authViewModel.signOut();
+                    },
                     child: Icon(
                       Icons.add,
                       color: Colors.white,
