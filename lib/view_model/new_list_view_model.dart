@@ -13,8 +13,12 @@ class NewListViewModel extends ChangeNotifier {
         return;
       }
 
-      await _listsCollection.add(
-          {'title': title, 'userId': FirebaseAuth.instance.currentUser!.uid});
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
+      await _listsCollection.add({
+        'title': title,
+        'userId': userId,
+      });
 
       notifyListeners();
     } catch (e) {

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:google_task_mvvm/model/task.dart';
 
 class HomeViewModel extends ChangeNotifier {
@@ -13,10 +13,13 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   final CollectionReference _tasksCollection =
-      FirebaseFirestore.instance.collection('tasks');
+      FirebaseFirestore.instance.collection('lists');
 
   Stream<List<Task>> get tasksStream =>
-      _tasksCollection.snapshots().map((snapshot) => snapshot.docs
-          .map((doc) => Task.fromMap(doc.data() as Map<String, dynamic>))
-          .toList());
+      _tasksCollection.snapshots().map((snapshot) {
+        final tasks =
+            snapshot.docs.map((doc) => Task.fromFirestore(doc)).toList();
+        print(tasks);
+        return tasks;
+      });
 }

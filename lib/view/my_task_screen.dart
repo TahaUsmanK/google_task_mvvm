@@ -11,12 +11,11 @@ class MyTasksScreen extends StatelessWidget {
     return StreamBuilder<List<Task>>(
       stream: viewModel.tasksStream,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildLoadingState();
-        } else if (snapshot.hasError) {
+        if (snapshot.hasError) {
           return _buildErrorState(snapshot.error.toString());
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          return _buildTasksList(snapshot.data!);
+          print(snapshot.data);
+          return _buildTasksList(context, snapshot.data!);
         } else {
           return _buildNoTasksState();
         }
@@ -24,24 +23,39 @@ class MyTasksScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadingState() {
-    return Center(
-      child: CircularProgressIndicator(),
+  Widget _buildErrorState(String error) {
+    return Container(
+      color: Color.fromARGB(255, 26, 25, 25),
+      child: Center(
+        child: Text(
+          'Error: $error',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 
-  Widget _buildErrorState(String error) {
-    return Text('Error: $error');
-  }
-
-  Widget _buildTasksList(List<Task> tasks) {
-    return ListView.builder(
-      itemCount: tasks.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(tasks[index].title),
-        );
-      },
+  Widget _buildTasksList(BuildContext context, List<Task> tasks) {
+    return Container(
+      color: Color.fromARGB(255, 26, 25, 25),
+      child: ListView.builder(
+        itemCount: tasks.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            elevation: 3,
+            color: Colors.white,
+            child: ListTile(
+              title: Text(
+                tasks[index].title,
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+              trailing: Icon(Icons.star_border_outlined),
+            ),
+          );
+        },
+      ),
     );
   }
 
