@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_task_mvvm/model/task.dart';
 import 'package:google_task_mvvm/view/no_task_screen.dart';
-import 'package:google_task_mvvm/view/starred_task_screen.dart';
 
 class HomeViewModel extends ChangeNotifier {
   late List<Tab> tabs;
@@ -41,35 +40,6 @@ class HomeViewModel extends ChangeNotifier {
       FirebaseFirestore.instance
           .collection('tabs')
           .add({'title': tabs[i].text});
-    }
-  }
-
-  Future<void> toggleStar(String taskId, BuildContext context) async {
-    try {
-      final taskDoc = await _tasksCollection.doc(taskId).get();
-      if (taskDoc.exists) {
-        final Map<String, dynamic>? data =
-            taskDoc.data() as Map<String, dynamic>?;
-
-        if (data != null && data.containsKey('starred')) {
-          final bool isStarred = data['starred'] ?? false;
-          await _tasksCollection.doc(taskId).update({'starred': !isStarred});
-
-          if (!isStarred) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => StarredTaskScreen()),
-            );
-          }
-        } else {
-          print('Field "starred" does not exist in the document.');
-        }
-      } else {
-        print('Task with id $taskId not found.');
-      }
-    } catch (e) {
-      print('Error toggling star: $e');
-      throw e;
     }
   }
 

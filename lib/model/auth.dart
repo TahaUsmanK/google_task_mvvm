@@ -21,7 +21,6 @@ class AuthModel {
         return authResult.user;
       }
     } catch (e) {
-      print('Error signing in with Google: $e');
       return null;
     }
   }

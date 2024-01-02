@@ -35,9 +35,6 @@ class MyTasksScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return TaskTile(
             task: tasks[index],
-            onStarToggle: (taskId) {
-              viewModel.toggleStar(taskId, context);
-            },
           );
         },
       ),

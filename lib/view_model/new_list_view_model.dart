@@ -21,7 +21,6 @@ class NewListViewModel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print('Error saving list: $e');
       throw e;
     }
   }

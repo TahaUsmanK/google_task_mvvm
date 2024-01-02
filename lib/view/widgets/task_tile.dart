@@ -3,11 +3,9 @@ import 'package:google_task_mvvm/model/task.dart';
 
 class TaskTile extends StatelessWidget {
   final Task task;
-  final void Function(String) onStarToggle;
 
   TaskTile({
     required this.task,
-    required this.onStarToggle,
   });
 
   @override
@@ -18,9 +16,7 @@ class TaskTile extends StatelessWidget {
         groupValue: 'selectedTaskId',
         toggleable: true,
         fillColor: MaterialStateProperty.all(Colors.white),
-        onChanged: (value) {
-          onStarToggle(task.id);
-        },
+        onChanged: (value) {},
       ),
       title: Text(
         task.title,

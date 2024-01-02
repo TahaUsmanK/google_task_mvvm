@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_task_mvvm/view/new_task_screen.dart';
-import 'package:google_task_mvvm/view/starred_task_screen.dart';
-import 'package:google_task_mvvm/view_model/home_view_model.dart';
-import 'package:provider/provider.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
@@ -15,15 +12,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = Provider.of<HomeViewModel>(context);
-
-    bool showTwoIcons = false;
-
-    if (currentIndex < homeViewModel.tabViews.length &&
-        homeViewModel.tabViews[currentIndex].runtimeType == StarredTaskScreen) {
-      showTwoIcons = true;
-    }
-
     return Container(
       height: 90,
       color: const Color.fromARGB(255, 49, 49, 49),
@@ -44,13 +32,11 @@ class BottomNavigationBarWidget extends StatelessWidget {
                   icon: Icon(Icons.mobiledata_off_rounded,
                       color: currentIndex == 1 ? Colors.white : Colors.white54),
                 ),
-                if (!showTwoIcons && currentIndex != 0)
-                  IconButton(
-                    onPressed: () => onTap(2),
-                    icon: Icon(Icons.more_horiz_rounded,
-                        color:
-                            currentIndex == 2 ? Colors.white : Colors.white54),
-                  ),
+                IconButton(
+                  onPressed: () => onTap(2),
+                  icon: Icon(Icons.more_horiz_rounded,
+                      color: currentIndex == 2 ? Colors.white : Colors.white54),
+                ),
               ],
             ),
             SizedBox(width: 80),
