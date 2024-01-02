@@ -9,7 +9,6 @@ class NewListViewModel extends ChangeNotifier {
   Future<void> saveList(String title) async {
     try {
       if (FirebaseAuth.instance.currentUser == null) {
-        print("User not authenticated");
         return;
       }
 

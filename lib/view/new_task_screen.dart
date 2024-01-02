@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_task_mvvm/view/home_screen.dart';
-import 'package:google_task_mvvm/view_model/home_view_model.dart';
+import 'package:google_task_mvvm/view_model/new_list_view_model.dart';
 import 'package:provider/provider.dart';
 
-class NewListScreen extends StatelessWidget {
+class NewTaskScreen extends StatelessWidget {
+  final TextEditingController _titleController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
-
     return ChangeNotifierProvider(
-      create: (context) => homeViewModel,
+      create: (context) => NewListViewModel(),
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 26, 25, 25),
         appBar: AppBar(
@@ -35,8 +35,9 @@ class NewListScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 14),
                 child: InkWell(
                   onTap: () {
-                    homeViewModel.addNewTab();
-                    homeViewModel.taskcontroller.clear();
+                    Provider.of<NewListViewModel>(context, listen: false)
+                        .saveList(_titleController.text.trim());
+                    _titleController.clear();
                   },
                   child: Text(
                     'Done',
@@ -51,7 +52,7 @@ class NewListScreen extends StatelessWidget {
             ),
           ],
           title: Text(
-            'Create new list',
+            'Create new task',
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 20,
@@ -66,7 +67,7 @@ class NewListScreen extends StatelessWidget {
               child: Container(
                 color: Color.fromARGB(255, 26, 25, 25),
                 child: TextField(
-                  controller: homeViewModel.taskcontroller,
+                  controller: _titleController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'Enter task',

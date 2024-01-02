@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_task_mvvm/view_model/auth_view_model.dart';
+import 'package:google_task_mvvm/view/new_task_screen.dart';
+import 'package:google_task_mvvm/view/starred_task_screen.dart';
+import 'package:google_task_mvvm/view_model/home_view_model.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
@@ -13,7 +15,14 @@ class BottomNavigationBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authViewModel = Provider.of<AuthViewModel>(context);
+    final homeViewModel = Provider.of<HomeViewModel>(context);
+
+    bool showTwoIcons = false;
+
+    if (currentIndex < homeViewModel.tabViews.length &&
+        homeViewModel.tabViews[currentIndex].runtimeType == StarredTaskScreen) {
+      showTwoIcons = true;
+    }
 
     return Container(
       height: 90,
@@ -35,7 +44,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
                   icon: Icon(Icons.mobiledata_off_rounded,
                       color: currentIndex == 1 ? Colors.white : Colors.white54),
                 ),
-                if (currentIndex == 1)
+                if (!showTwoIcons && currentIndex != 0)
                   IconButton(
                     onPressed: () => onTap(2),
                     icon: Icon(Icons.more_horiz_rounded,
@@ -56,7 +65,11 @@ class BottomNavigationBarWidget extends StatelessWidget {
                   ),
                   child: FloatingActionButton(
                     onPressed: () {
-                      authViewModel.signOut();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewTaskScreen(),
+                          ));
                     },
                     child: Icon(
                       Icons.add,
